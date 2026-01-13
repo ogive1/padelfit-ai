@@ -10,7 +10,7 @@ import {
   Dumbbell,
   Brain,
   MessageCircle,
-  User,
+  User as UserIcon,
   LogOut,
   Menu,
   X,
@@ -24,7 +24,7 @@ const navigation = [
   { name: "Warm-up", href: "/dashboard/warmup", icon: Dumbbell },
   { name: "Exercises", href: "/dashboard/exercises", icon: Brain },
   { name: "AI Coach", href: "/dashboard/coach", icon: MessageCircle },
-  { name: "Profile", href: "/dashboard/profile", icon: User },
+  { name: "Profile", href: "/dashboard/profile", icon: UserIcon },
 ];
 
 interface DashboardNavProps {

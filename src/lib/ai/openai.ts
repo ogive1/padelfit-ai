@@ -1,8 +1,16 @@
 import OpenAI from "openai";
 
-export const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Lazy initialization to avoid build-time errors
+let openaiClient: OpenAI | null = null;
+
+function getOpenAI(): OpenAI {
+  if (!openaiClient) {
+    openaiClient = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY || "",
+    });
+  }
+  return openaiClient;
+}
 
 export async function generateWarmupRoutine({
   injuryHistory,
@@ -58,7 +66,7 @@ Return as JSON with this structure:
   "tips": ["string"]
 }`;
 
-  const response = await openai.chat.completions.create({
+  const response = await getOpenAI().chat.completions.create({
     model: "gpt-4-turbo-preview",
     messages: [{ role: "user", content: prompt }],
     response_format: { type: "json_object" },
@@ -87,7 +95,7 @@ Return as JSON:
   "quickAction": "string (one simple thing to do right now)"
 }`;
 
-  const response = await openai.chat.completions.create({
+  const response = await getOpenAI().chat.completions.create({
     model: "gpt-4-turbo-preview",
     messages: [{ role: "user", content: prompt }],
     response_format: { type: "json_object" },
@@ -132,7 +140,7 @@ Return as JSON:
   "summary": "string (2-3 sentences)"
 }`;
 
-  const response = await openai.chat.completions.create({
+  const response = await getOpenAI().chat.completions.create({
     model: "gpt-4-turbo-preview",
     messages: [{ role: "user", content: prompt }],
     response_format: { type: "json_object" },
@@ -167,7 +175,7 @@ Guidelines:
 ${userContext?.injuryHistory?.length ? `\nUser's injury history: ${userContext.injuryHistory.join(", ")}` : ""}
 ${userContext?.subscriptionTier ? `\nUser's subscription: ${userContext.subscriptionTier}` : ""}`;
 
-  const response = await openai.chat.completions.create({
+  const response = await getOpenAI().chat.completions.create({
     model: "gpt-4-turbo-preview",
     messages: [
       { role: "system", content: systemPrompt },
