@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "AI-powered padel injury prevention platform",
   "private": true,
+  "engines": {
+    "node": ">=18.17.0 <21.0.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
